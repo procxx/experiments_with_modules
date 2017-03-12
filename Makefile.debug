@@ -1,0 +1,18 @@
+CXX           = cl
+DEFINES       = -DUNICODE -DWIN32 -DWIN64 -D_DEBUG -D_CONSOLE
+CXXFLAGS      = /experimental:module  -nologo -Zc:wchar_t -FS -Zc:strictStrings -Zc:throwingNew -Zi -MDd -GR -W3 -EHsc /Fdmain.pdb $(DEFINES)
+INCPATH       = 
+LINKER        = link
+LFLAGS        = /NOLOGO /DYNAMICBASE /NXCOMPAT /DEBUG /SUBSYSTEM:CONSOLE "/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'"
+LIBS          = /LIBPATH:"c:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.25017\ifc\x64\Debug" std.lib
+
+all: main.exe
+
+manager.obj:
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) /module:reference std.core manager.ixx
+
+main.obj:
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) /module:reference std.core /module:reference manager.ifc main.cpp
+
+main.exe: main.obj manager.obj
+	$(LINKER) $(LFLAGS) /MANIFEST:embed /OUT:main.exe main.obj manager.obj $(LIBS)
