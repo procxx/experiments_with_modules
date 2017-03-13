@@ -1,0 +1,22 @@
+CXX           = cl
+DEFINES       = -DUNICODE -DWIN32 -DWIN64 -D_CONSOLE -D_HAS_ITERATOR_DEBUGGING=0 -D_SECURE_SCL=0 -DNDEBUG
+CXXFLAGS      = /experimental:module  -nologo -Zc:wchar_t -FS -Zc:strictStrings -Zc:throwingNew -Zi -O2 -MD -GR -W3 -EHsc /Fdmain.pdb $(DEFINES)
+INCPATH       = 
+LINKER        = link
+LFLAGS        = /NOLOGO /DYNAMICBASE /NXCOMPAT /SUBSYSTEM:CONSOLE "/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'"
+LIBS          = /LIBPATH:"$(IFCPATH)\Release" std.lib
+MODULES		  = /module:search "$(IFCPATH)\Release" /module:search "."
+
+all: main.exe
+
+manager.obj:
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) $(MODULES) manager.ixx
+
+actor.obj:
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) $(MODULES) actor.ixx
+
+main.obj:
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) $(MODULES) main.cpp
+
+main.exe: actor.obj manager.obj main.obj
+	$(LINKER) $(LFLAGS) /MANIFEST:embed /OUT:main.exe $(LIBS) main.obj manager.obj actor.obj

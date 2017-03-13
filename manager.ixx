@@ -1,12 +1,16 @@
 module Manager;
 
+import Actor;
 import std.core;
 
-// using namespace std;
-
-export class Manager {
+export class M {
 public:
-    Manager() {
-        std::cout << __FUNCTION__ << std::endl;
+    M() {
+
     }
+    int b() {
+        return f(5);
+    }
+
+    std::vector<int> m_vec;
 };

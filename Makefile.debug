@@ -4,15 +4,19 @@ CXXFLAGS      = /experimental:module  -nologo -Zc:wchar_t -FS -Zc:strictStrings 
 INCPATH       = 
 LINKER        = link
 LFLAGS        = /NOLOGO /DYNAMICBASE /NXCOMPAT /DEBUG /SUBSYSTEM:CONSOLE "/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'"
-LIBS          = /LIBPATH:"c:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.25017\ifc\x64\Debug" std.lib
+LIBS          = /LIBPATH:"$(IFCPATH)\Debug" std.lib
+MODULES		  = /module:search "$(IFCPATH)\Debug" /module:search "."
 
 all: main.exe
 
 manager.obj:
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) /module:reference std.core manager.ixx
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) $(MODULES) manager.ixx
+
+actor.obj:
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) $(MODULES) actor.ixx
 
 main.obj:
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) /module:reference std.core /module:reference manager.ifc main.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) $(MODULES) main.cpp
 
-main.exe: main.obj manager.obj
-	$(LINKER) $(LFLAGS) /MANIFEST:embed /OUT:main.exe main.obj manager.obj $(LIBS)
+main.exe: actor.obj manager.obj main.obj
+	$(LINKER) $(LFLAGS) /MANIFEST:embed /OUT:main.exe $(LIBS) main.obj manager.obj actor.obj
