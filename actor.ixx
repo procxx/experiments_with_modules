@@ -1,5 +1,5 @@
+export module Actor;
 import std.core;
-module Actor;
 
 export template<typename T> 
 void foo(T t) {

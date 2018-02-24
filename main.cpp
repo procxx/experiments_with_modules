@@ -1,5 +1,5 @@
 import std.core;
-import Manager;
+import manager;
 
 int main() {
     M m;
@@ -11,8 +11,9 @@ int main() {
     for(auto v: m.m_vec) {
         std::cout << v << std::endl;
     }
-    printf("%d\n", m.b());
+    // printf("%d\n", m.b());
 
-    std::cout << m.b() << std::endl;
+    // std::cout << m.b() << std::endl;
+
     return 0;
 }

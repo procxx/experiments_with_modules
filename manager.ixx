@@ -1,16 +1,14 @@
-module Manager;
 
-import Actor;
+export module manager;
+
 import std.core;
 
 export class M {
 public:
-    M() {
+    M();
+    int b();
 
-    }
-    int b() {
-        return f(5);
-    }
-
+    std::string m_name;
     std::vector<int> m_vec;
+    std::string m_str;
 };
