@@ -20,14 +20,24 @@ function(target_enable_modules TARGET)
     target_compile_options(${TARGET} PRIVATE /experimental:module "/module:search ${_MODULES_PATH}")
 endfunction()
 
+function(target_add_module TARGET MODULE_FILES)
+    set(_module_files ${MODULE_FILES} ${ARGN})
+    get_target_property(_srcs ${TARGET} SOURCES)
 
-set(MODULES actor.ixx manager.ixx)
+    foreach(_module_file ${_module_files})
+        message(${_module_file})
+        set_source_files_properties(${_module_file} PROPERTIES LANGUAGE CXX)
+        list(INSERT _srcs 0 ${_module_file})
+    endforeach()
+
+    set_target_properties(${TARGET} PROPERTIES SOURCES "${_srcs}")
+endfunction()
+
 set(SOURCES main.cpp manager.cpp)
-list(APPEND SOURCES ${MODULES})
 
 add_executable(${PROJECT_NAME} ${SOURCES})
-set_source_files_properties(${MODULES} PROPERTIES LANGUAGE CXX)
 target_enable_modules(${PROJECT_NAME})
+target_add_module(${PROJECT_NAME} actor.ixx manager.ixx)
 
 target_link_libraries(${PROJECT_NAME} Modules::std)
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
